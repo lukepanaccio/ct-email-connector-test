@@ -1,0 +1,18 @@
+
+> event@1.0.0 test
+> npm run test:unit --coverage --collectCoverageFrom='src/**/*.{ts,jsx,tsx,js}' --coverageReporters='text'
+
+
+> event@1.0.0 test:unit
+> node_modules/.bin/jest --config tests/unit/jest.config.cjs
+
+[31merror[39m:    Bad request: Wrong No Pub/Sub message format - Missing data in body message {"statusCode":400}
+PASS Tests Javascript Application - Service tests/unit/mail-sending.controller.spec.js
+  mail-sending.controller.spec
+    ✓ should return 202 HTTP status when message data is missing in incoming event message. (25 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        4.107 s
+

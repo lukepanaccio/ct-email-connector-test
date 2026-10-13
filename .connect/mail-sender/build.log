@@ -1,0 +1,81 @@
+Warning: Exporting to docker daemon (building without --publish) and daemon uses containerd storage; performance may be significantly degraded.
+For more information, see https://github.com/buildpacks/pack/issues/2272.
+gcr.io/buildpacks/builder@sha256:5977b4bd47d3e9ff729eefe9eb99d321d4bba7aa3b14986323133f40b622aef1: Pulling from buildpacks/builder
+Digest: sha256:5977b4bd47d3e9ff729eefe9eb99d321d4bba7aa3b14986323133f40b622aef1
+Status: Image is up to date for gcr.io/buildpacks/builder@sha256:5977b4bd47d3e9ff729eefe9eb99d321d4bba7aa3b14986323133f40b622aef1
+latest: Pulling from buildpacks/google-22/run
+Digest: sha256:c89d55fe323cb1281f449be0d7bd56dab55612b0b329d5b16793f97c93767eb6
+Status: Image is up to date for gcr.io/buildpacks/google-22/run:latest
+0.0.1: Pulling from ct-connect-dev/buildpacks/connect-common-module
+Digest: sha256:6f83eaa7dc492da8c99389661d675abfb0a4017b15960a0a6934b2406a0c882c
+Status: Image is up to date for europe-west1-docker.pkg.dev/ct-connect-dev/buildpacks/connect-common-module:0.0.1
+0.0.1: Pulling from ct-connect-dev/buildpacks/serve-application
+Digest: sha256:4ac3d1f93bff9cb770a0e554b5b4e12e4c7aad2d12589c4a62c90c5258dc41cd
+Status: Image is up to date for europe-west1-docker.pkg.dev/ct-connect-dev/buildpacks/serve-application:0.0.1
+0.0.1: Pulling from ct-connect-dev/buildpacks/connect-tester
+Digest: sha256:8626cc8504f8eca3c0d774253490bcb6b5e07c3cf0b705074a3b9e15660f9d3d
+Status: Image is up to date for europe-west1-docker.pkg.dev/ct-connect-dev/buildpacks/connect-tester:0.0.1
+Warning: Builder is trusted but additional modules were added; using the untrusted (5 phases) build flow
+docker.io/buildpacksio/lifecycle@sha256:11d05141f3449d434f20327261468c797c1642f029ff36ac68002bdaef115f69: Pulling from buildpacksio/lifecycle
+Digest: sha256:11d05141f3449d434f20327261468c797c1642f029ff36ac68002bdaef115f69
+Status: Image is up to date for buildpacksio/lifecycle@sha256:11d05141f3449d434f20327261468c797c1642f029ff36ac68002bdaef115f69
+Warning: PACK_VOLUME_KEY is unset; set this environment variable to a secret value to avoid creating a new volume cache on every build
+===> ANALYZING
+[analyzer] Image with name "ct-email-connector-test_mail-sender" not found
+===> DETECTING
+[detector] target distro name/version labels not found, reading /etc/os-release file
+[detector] 4 of 13 buildpacks participating
+[detector] google.nodejs.runtime    1.0.0
+[detector] google.nodejs.npm        1.1.0
+[detector] google.utils.label-image 0.0.2
+[detector] npm-tester               0.0.1
+===> RESTORING
+===> BUILDING
+[builder] target distro name/version labels not found, reading /etc/os-release file
+[builder] === Node.js - Runtime (google.nodejs.runtime@1.0.0) ===
+[builder] 2026/10/13 00:42:02 [DEBUG] GET https://dl.google.com/runtimes/ubuntu2204/nodejs/version.json
+[builder] ***** CACHE MISS: "nodejs"
+[builder] Installing Node.js v20.20.2.
+[builder] 2026/10/13 00:42:03 [DEBUG] GET https://dl.google.com/runtimes/ubuntu2204/nodejs/nodejs-20.20.2.tar.gz
+[builder] === Node.js - Npm (google.nodejs.npm@1.1.0) ===
+[builder] ***** CACHE MISS: "npm_modules"
+[builder] Installing application dependencies.
+[builder] --------------------------------------------------------------------------------
+[builder] Running "npm ci --quiet --no-fund --no-audit (NODE_ENV=development)"
+[builder] 
+[builder] added 738 packages in 31s
+[builder] npm notice
+[builder] npm notice New major version of npm available! 10.8.2 -> 12.2.0
+[builder] npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+[builder] npm notice To update run: npm install -g npm@12.2.0
+[builder] npm notice
+[builder] Done "npm ci --quiet --no-fund --no-audit (NODE_ENV=development)" (32.367904431s)
+[builder] ***** CACHE MISS: "watchexec"
+[builder] Installing watchexec v1.12.0
+[builder] --------------------------------------------------------------------------------
+[builder] Running "bash -c curl --fail --show-error --silent --location --retry 3 https://github.com/watchexec/watchexec/releases/download/1.12.0/watchexec-1.12.0-x86_64-unknown-linux-gnu.tar.xz | tar xJ --directory /layers/google.nodejs.npm/watchexec/bin --strip-components=1 --wildcards \"*watchexec\""
+[builder] Done "bash -c curl --fail --show-error --silent --location --retry..." (2.222235209s)
+[builder] === Utils - Label Image (google.utils.label-image@0.0.2) ===
+[builder] time=2026-10-13T00:43:40.745Z level=ERROR msg="Failed to write report" reportDetails="{BuildID:5974faf6-17f9-42a9-b4ba-46277270334f Lifecycle:Build ApplicationName:mail-sender BuildPackName:The npm tester to run npm tests BuildPackID:npm-tester Status:Success Messages:[{Message:{\"applicationName\":\"mail-sender\",\"testOutput\":\"\\n\\u003e event@1.0.0 test\\n\\u003e npm run test:unit --coverage --collectCoverageFrom='src/**/*.{ts,jsx,tsx,js}' --coverageReporters='text'\\n\\n\\n\\u003e event@1.0.0 test:unit\\n\\u003e node_modules/.bin/jest --config tests/unit/jest.config.cjs\\n\\n\\u001b[31merror\\u001b[39m:    Bad request: Wrong No Pub/Sub message format - Missing data in body message {\\\"statusCode\\\":400}\\nPASS Tests Javascript Application - Service tests/unit/mail-sending.controller.spec.js\\n  mail-sending.controller.spec\\n    ✓ should return 202 HTTP status when message data is missing in incoming event message. (25 ms)\\n\\nTest Suites: 1 passed, 1 total\\nTests:       1 passed, 1 total\\nSnapshots:   0 total\\nTime:        4.107 s\\n\"} Time:2026-10-13 00:43:40.742558211 +0000 UTC m=+13.542661674}] Time:2026-10-13 00:43:27.295520802 +0000 UTC m=+0.096683668}" stack="open report/report.jsonl: no such file or directory"
+===> EXPORTING
+[exporter] Adding layer 'google.nodejs.runtime:node'
+[exporter] Adding layer 'google.nodejs.npm:devmode_scripts'
+[exporter] Adding layer 'google.nodejs.npm:env'
+[exporter] Adding layer 'google.nodejs.npm:watchexec'
+[exporter] Adding layer 'buildpacksio/lifecycle:launch.sbom'
+[exporter] Added 1/1 app layer(s)
+[exporter] Adding layer 'buildpacksio/lifecycle:launcher'
+[exporter] Adding layer 'buildpacksio/lifecycle:config'
+[exporter] Adding layer 'buildpacksio/lifecycle:process-types'
+[exporter] Adding label 'io.buildpacks.lifecycle.metadata'
+[exporter] Adding label 'io.buildpacks.build.metadata'
+[exporter] Adding label 'io.buildpacks.project.metadata'
+[exporter] Setting default process type 'web'
+[exporter] Saving ct-email-connector-test_mail-sender...
+[exporter] *** Images (1f1544a4e319):
+[exporter]       ct-email-connector-test_mail-sender
+[exporter]       ct-email-connector-test_mail-sender:M7OHdOMsOXMN4V9kNBy
+[exporter] Adding cache layer 'google.nodejs.runtime:node'
+[exporter] Adding cache layer 'google.nodejs.npm:npm_modules'
+[exporter] Adding cache layer 'google.nodejs.npm:watchexec'
+Successfully built image 'ct-email-connector-test_mail-sender'
