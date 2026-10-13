@@ -71,7 +71,7 @@ const envValidators = [
       message: 'Subscription destination is required.',
       referencedBy: 'environmentVariables',
     },
-    { min: 2, max: 10 }
+    { min: 2, max: undefined }
   ),
 
   validDestinations(['connectSubscriptionDestination'], {
