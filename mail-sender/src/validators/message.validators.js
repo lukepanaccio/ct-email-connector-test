@@ -73,7 +73,7 @@ function isValidMessageType(messageBody) {
   );
 }
 
-export function doValidation(request) {
+function validatePubSubEnvelope(request) {
   if (!request.body) {
     throw new CustomError(
       HTTP_STATUS_BAD_REQUEST,
@@ -95,6 +95,45 @@ export function doValidation(request) {
       'Bad request: Wrong No Pub/Sub message format - Missing data in body message'
     );
   }
+}
+
+function validateResourceIdentifiers(messageBody) {
+  const resourceTypeId = messageBody?.resource?.typeId;
+  const resourceId = messageBody?.resource?.id;
+
+  if (
+    isCustomerSubscriptionMessage(messageBody) &&
+    (resourceTypeId !== 'customer' || !resourceId)
+  ) {
+    throw new CustomError(
+      HTTP_STATUS_BAD_REQUEST,
+      ` No customer ID is found in message.`
+    );
+  }
+
+  if (!isOrderSubscriptionMessage(messageBody)) {
+    return;
+  }
+  if (resourceTypeId !== 'order' || !resourceId) {
+    throw new CustomError(
+      HTTP_STATUS_BAD_REQUEST,
+      ` No order ID is found in message.`
+    );
+  }
+  if (
+    messageBody.order &&
+    !messageBody.order?.customerId &&
+    !messageBody.order?.customerEmail
+  ) {
+    throw new CustomError(
+      HTTP_STATUS_SUCCESS_ACCEPTED,
+      `Order (ID=${resourceId}) does not link to any customer contact. Skip handling the message.`
+    );
+  }
+}
+
+export function doValidation(request) {
+  validatePubSubEnvelope(request);
   const encodedMessageBody = request.body.message.data;
   const messageBody = decodeToJson(encodedMessageBody);
 
@@ -113,38 +152,7 @@ export function doValidation(request) {
     );
   }
 
-  // Make sure incoming message contains the identifier of the changed resources
-  const resourceTypeId = messageBody?.resource?.typeId;
-  const resourceId = messageBody?.resource?.id;
-
-  if (
-    isCustomerSubscriptionMessage(messageBody) &&
-    (resourceTypeId !== 'customer' || !resourceId)
-  ) {
-    throw new CustomError(
-      HTTP_STATUS_BAD_REQUEST,
-      ` No customer ID is found in message.`
-    );
-  }
-
-  if (isOrderSubscriptionMessage(messageBody)) {
-    if (resourceTypeId !== 'order' || !resourceId) {
-      throw new CustomError(
-        HTTP_STATUS_BAD_REQUEST,
-        ` No order ID is found in message.`
-      );
-    }
-    if (
-      messageBody.order &&
-      !messageBody.order?.customerId &&
-      !messageBody.order?.customerEmail
-    ) {
-      throw new CustomError(
-        HTTP_STATUS_SUCCESS_ACCEPTED,
-        `Order (ID=${resourceId}) does not link to any customer contact. Skip handling the message.`
-      );
-    }
-  }
+  validateResourceIdentifiers(messageBody);
 
   if (isSelfCreatedChange(messageBody)) {
     throw new CustomError(

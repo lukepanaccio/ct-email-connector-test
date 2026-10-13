@@ -14,7 +14,6 @@ import OrderStateChangeHandler from '../handlers/order-state-change.handler.js';
 import OrderRefund from '../handlers/order-refund.handler.js';
 
 class HandlerFactory {
-  constructor() {}
   getHandler(handlerType) {
     if (HANDLER_TYPE_CUSTOMER_REGISTRATION === handlerType) {
       return new CustomerRegistrationHandler();

@@ -9,10 +9,10 @@
 [31merror[39m:    Bad request: Wrong No Pub/Sub message format - Missing data in body message {"statusCode":400}
 PASS Tests Javascript Application - Service tests/unit/mail-sending.controller.spec.js
   mail-sending.controller.spec
-    ✓ should return 202 HTTP status when message data is missing in incoming event message. (25 ms)
+    ✓ should return 202 HTTP status when message data is missing in incoming event message. (12 ms)
 
 Test Suites: 1 passed, 1 total
 Tests:       1 passed, 1 total
 Snapshots:   0 total
-Time:        4.107 s
+Time:        1.907 s
 
