@@ -40,12 +40,13 @@ export async function deleteEmailDeliverySubscription(apiRoot) {
 }
 
 function buildDestination(config) {
-  assertNonNullable(
-    config.connectSubscriptionDestination,
-    'CONNECT_SUBSCRIPTION_DESTINATION is required'
+  const destinationType =
+    config.connectSubscriptionDestination ?? 'GoogleCloudPubSub';
+  process.stdout.write(
+    `CONNECT_SUBSCRIPTION_DESTINATION=${config.connectSubscriptionDestination ?? '(unset)'}\n`
   );
 
-  switch (config.connectSubscriptionDestination) {
+  switch (destinationType) {
     case 'GoogleCloudPubSub':
       assertNonNullable(
         config.connectGcpTopicName,
@@ -97,6 +98,9 @@ export async function createSubscription(apiRoot, config) {
       },
     })
     .execute();
+  process.stdout.write(
+    `Created Subscription ${EMAIL_DELIVERY_SUBSCRIPTION_KEY} (${destination.type})\n`
+  );
 }
 
 function buildCustomerEmailTokenChangeMessageType() {
